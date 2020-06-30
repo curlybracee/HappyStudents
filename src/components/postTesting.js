@@ -27,14 +27,15 @@ function PostTesting() {
 
    
     return (
-        <div className="form-container">
+        <div className="container">
             
-            <form className="form-container" onSubmit={onSubmit}>
-                UserName :<input type="text" value={username} onChange={(e)=>setUsername(e.target.value)}/>
-                Password :<input type="text" value={password} onChange={(e)=>setPassword(e.target.value)} />
-                <button name="submitButton"type="submit">Submit</button>
-            <button className="getButton" onClick={getAll}>getAll</button>
-
+            <form  onSubmit={onSubmit}>
+              <div className="form-group">
+                  UserName :<input className="form-control" type="text" value={username} onChange={(e)=>setUsername(e.target.value)}/>
+                Password :<input type="text" className="form-control mb-3" value={password} onChange={(e)=>setPassword(e.target.value)} />
+                <button className="btn btn-primary mr-5" name="submitButton"type="submit">Submit</button>
+                <button className="btn btn-primary" onClick={getAll}>getAll</button>
+                </div> 
             </form>
             <h1>{token}</h1>
         </div>
