@@ -1,0 +1,17 @@
+body{
+  margin:0;
+}
+.header-container{
+  background-color: wheat;
+  height: 100px;
+}
+h1{
+  margin:0
+}
+.form-container{
+  display: flex;
+  flex-direction: column;
+  width:300px;
+  padding: 20px;
+  
+}
