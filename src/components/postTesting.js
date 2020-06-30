@@ -33,7 +33,7 @@ function PostTesting() {
                 UserName :<input type="text" value={username} onChange={(e)=>setUsername(e.target.value)}/>
                 Password :<input type="text" value={password} onChange={(e)=>setPassword(e.target.value)} />
                 <button name="submitButton"type="submit">Submit</button>
-            <button onClick={getAll}>getAll</button>
+            <button className="getButton" onClick={getAll}>getAll</button>
 
             </form>
             <h1>{token}</h1>
