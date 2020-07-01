@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import axios from "axios";
+import {useHistory
+} from "react-router-dom";
 
 function PostTesting() {
   const [username, setUsername] = useState("goo");
   const [password, setPassword] = useState("goop");
   const [token, setToken] = useState("");
-
+  let history=useHistory();
   const onSubmit = (e) => {
     e.preventDefault();
     axios
       .post("http://54.169.208.124:9000/api/gettoken", { username, password })
       .then((res) => {
         setToken(res.data.data.token);
+        localStorage.setItem("token",res.data.data.token);
+        history.push("/home");
       })
       .catch((err) => {
         console.log(err);
@@ -19,12 +23,10 @@ function PostTesting() {
       });
   };
 
-  const getAll = () => {
-    axios
-      .post("http://54.169.208.124:9000/api/getall", { token })
-      .then((res) => console.log(res))
-      .catch((err) => {console.log(err); setToken("")});
-  };
+ 
+    
+
+  
 
   return (
     <div className="container">
@@ -46,21 +48,20 @@ function PostTesting() {
           />
           <div className="d-flex ">
             <button
-              className="btn btn-primary ml-5 mr-5"
+              className="btn btn-light  ml-5 mr-5"
               name="submitButton"
               type="submit"
             >
               Submit
             </button>
-            <button className="btn btn-primary" onClick={getAll}>
-              getAll
-            </button>
           </div>
           <p className="overflow-hidden">{token}</p>
         </div>
+
       </form>
+     
+</div>
     
-    </div>
   );
 }
 
