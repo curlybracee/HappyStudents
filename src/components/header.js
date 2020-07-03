@@ -9,8 +9,8 @@ export const Header = () => {
 
   return (
     <div className="d-flex justify-content-between">
-      <h1>
-        <a href="/home"> happyStudents</a>
+      <h1 className="text-primary">
+       HappyStudents
       </h1>
       <div className="m-2 w-75">
         <form>
