@@ -1,11 +1,18 @@
-import React from 'react'
+import React from "react";
+import { UserfContext } from "../context/userState";
+import { useContext } from "react";
 
-function Header() {
-    return (
-        <div className="container bg-dark text-light">
-            <h1 className="">Testing</h1>
-        </div>
-    )
-}
+export const Header = () => {
+  const { userLoging, isToken } = useContext(UserfContext);
 
-export default Header
+  console.log(isToken);
+
+  const userStatus = isToken ? "Logout" : "Login";
+
+  return (
+    <div className="d-flex justify-content-between">
+      <h1>happyStudents</h1>
+      <button onClick={userLoging}>{userStatus}</button>
+    </div>
+  );
+};
