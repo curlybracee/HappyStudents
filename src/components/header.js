@@ -5,14 +5,25 @@ import { useContext } from "react";
 export const Header = () => {
   const { userLoging, isToken } = useContext(UserfContext);
 
-  console.log(isToken);
-
   const userStatus = isToken ? "Logout" : "Login";
 
   return (
     <div className="d-flex justify-content-between">
-      <h1>happyStudents</h1>
-      <button onClick={userLoging}>{userStatus}</button>
+      <h1>
+        <a href="/home"> happyStudents</a>
+      </h1>
+      <div className="m-2 w-75">
+        <form>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search Course"
+          />
+        </form>
+      </div>
+      <button className="btn btn-primary m-2 ml-auto" onClick={userLoging}>
+        {userStatus}
+      </button>
     </div>
   );
 };
