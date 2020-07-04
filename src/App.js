@@ -3,7 +3,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import { UserProvider } from "./context/userState";
-import { Header } from "./components/Header";
+import { Header } from "./components/header";
 import { Home } from "./components/Home";
 
 function App() {

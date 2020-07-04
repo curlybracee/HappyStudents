@@ -8,8 +8,9 @@ export const Home = () => {
 
   return (
     <div className="d-flex flex-column">
-        <div className="mb-5"><HeroWall/></div>
       <div className="mt-5"> {!isToken ? <Login /> : null}</div>
+        <div className="mb-5"><HeroWall/></div>
+      
       
      
      
