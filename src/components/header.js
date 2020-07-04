@@ -8,20 +8,20 @@ export const Header = () => {
   const userStatus = isToken ? "Logout" : "Login";
 
   return (
-    <div className="d-flex justify-content-between">
-      <h1 className="text-primary">
+    <div className="header-container">
+      <h1>
        HappyStudents
       </h1>
-      <div className="m-2 w-75">
+      <div className="searchBar">
         <form>
           <input
             type="text"
-            className="form-control"
+            className="searchInput"
             placeholder="Search Course"
           />
         </form>
       </div>
-      <button className="btn btn-primary m-2 ml-auto" onClick={userLoging}>
+      <button className="loginButton" onClick={userLoging}>
         {userStatus}
       </button>
     </div>

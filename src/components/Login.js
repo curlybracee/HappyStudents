@@ -21,22 +21,24 @@ export const Login = () => {
   };
   if (!isToken) {
     return (
-      <div className="container">
-        <form onSubmit={onSubmit} className="form d-flex flex-column">
+      <div className="">
+        <form onSubmit={onSubmit} className="userLogin ml-3">
           <h2>login</h2>
+          <label>Username</label>
           <input
-            className="form-control my-2"
+            className="loginInput mb-2"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             type="text"
           />
+          <label>Password</label>
           <input
-            className="form-control mb-2"
+            className="loginInput mb-2"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            type="text"
+            type="password"
           />
-          <button className="btn btn-info">Submit</button>
+          <button className="loginButton mx-auto" type="submit">Submit</button>
         </form>
       </div>
     );
