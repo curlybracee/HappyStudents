@@ -1,18 +1,20 @@
-import React from 'react';
-import './App.css';
-import PostTesting from './components/postTesting';
-import Header from './components/header'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {BrowserRouter as Router,Route}from 'react-router-dom'
-import home from './components/home';
+import React from "react";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@fortawesome/fontawesome-free/css/all.css";
+import { UserProvider } from "./context/userState";
+import { Header } from "./components/header";
+import { Home } from "./components/Home";
+
 function App() {
   return (
     <div className="App">
-      <Header/>
-      <Router>
-        <Route path="/" exact component={localStorage.getItem("token")?home:PostTesting}/>
-      <Route path="/home" component={home}/>
-    </Router>
+      <UserProvider>
+        <div className="container">
+          <Header />
+          <Home />
+        </div>
+      </UserProvider>
     </div>
   );
 }
