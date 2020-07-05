@@ -3,10 +3,14 @@ import { UserfContext } from "../context/userState";
 import { useContext } from "react";
 import GoogleLogin from 'react-google-login'
 export const Header = () => {
-  const { userLoging, isToken } = useContext(UserfContext);
+  const { userLoging, isToken,name,setName } = useContext(UserfContext);
+
+
   const responseGoogle=(response)=>{
-    console.log(response);
     
+    setName(response.profileObj.name);
+    localStorage.setItem("name":response.profileObj.name);
+
   }
 
   return (
@@ -23,13 +27,13 @@ export const Header = () => {
           />
         </form>
       </div>
-      <GoogleLogin
-          clientId="230577544545-c65p7g6jqg33p8rqntbc645rn200c69h.apps.googleusercontent.com"
+      {name?name:<GoogleLogin
+          clientId="230577544545-8abl4956ddkul6bpjsrfor7dq8bsu2ue.apps.googleusercontent.com"
           buttonText="Google Login"
           onSuccess={responseGoogle}
           onFailure={responseGoogle}
           cookiePolicy={'single_host_origin'}
-          />
+          />}
     </div>
   );
 };

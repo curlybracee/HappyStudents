@@ -11,7 +11,7 @@ export const UserProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
 
   const [isToken, setIsToken] = useState(token ? true : false);
-
+const [name, setName] = useState(localStorage.getItem("name"));
 
  
 
@@ -24,7 +24,12 @@ export const UserProvider = ({ children }) => {
   }
 
   return (
-    <UserfContext.Provider value={{ userLoging, isToken: isToken, token,setIsToken }}>
+    <UserfContext.Provider value={{ 
+      userLoging,
+       isToken: isToken,
+        token,setIsToken,
+        name,
+        setName }}>
       {children}
     </UserfContext.Provider>
   );
