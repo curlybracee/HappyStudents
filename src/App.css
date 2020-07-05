@@ -49,18 +49,3 @@ padding: 6px;
     box-shadow:0 3px 5px silver;
 }
 
-.loginButton{
-    border: none;
-    background-color:#35eccd;
-    border-radius: 5px;
-    padding: 3px;
-    text-align:center ;
-    width: 80px;
-  
-}
-.loginButton:focus{
-    outline: none;
-}
-.loginButton:hover{
-    background-color: #2abda4;
-}
