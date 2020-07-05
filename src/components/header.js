@@ -9,7 +9,7 @@ export const Header = () => {
   const responseGoogle=(response)=>{
     
     setName(response.profileObj.name);
-    localStorage.setItem("name":response.profileObj.name);
+    localStorage.setItem("name",response.profileObj.name);
 
   }
 
