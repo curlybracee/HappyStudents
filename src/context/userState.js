@@ -9,27 +9,22 @@ export const UserfContext = createContext({});
 
 export const UserProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
-
-  const [isToken, setIsToken] = useState(token ? true : false);
-const [name, setName] = useState(localStorage.getItem("name"));
-
- 
+  const [name, setName] = useState(localStorage.getItem("name"));
+  const [usertype, setUserType] = useState("student");
 
   //Actions
-  function userLoging() {
-    if(isToken)
-    {localStorage.clear();
-    setIsToken(!isToken);}
-
-  }
 
   return (
-    <UserfContext.Provider value={{ 
-      userLoging,
-       isToken: isToken,
-        token,setIsToken,
+    <UserfContext.Provider
+      value={{
+        token,
+        setToken,
         name,
-        setName }}>
+        setName,
+        usertype,
+        setUserType,
+      }}
+    >
       {children}
     </UserfContext.Provider>
   );

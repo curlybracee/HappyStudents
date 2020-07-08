@@ -10,9 +10,13 @@ function App() {
   return (
     <div className="App">
       <UserProvider>
-        <div className="container">
+        <div>
           <Header />
-          <Home />
+          <div className="container">
+            <div className="wall-container">
+              <Home />
+            </div>
+          </div>
         </div>
       </UserProvider>
     </div>
