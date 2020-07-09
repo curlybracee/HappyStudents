@@ -10,7 +10,7 @@ export const UserfContext = createContext({});
 export const UserProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [name, setName] = useState(localStorage.getItem("name"));
-  const [usertype, setUserType] = useState("student");
+  const [usertype, setUserType] = useState(localStorage.getItem("userType"));
 
   //Actions
 

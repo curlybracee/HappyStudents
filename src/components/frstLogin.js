@@ -1,39 +1,32 @@
-import React, { useContext } from "react";
-import axios from "axios";
+import React, { useContext, useState } from "react";
 import { UserfContext } from "../context/userState";
 
 const FrstLogin = () => {
-  const { name, token, usertype, setUserType } = useContext(
+  const { name, setUserType } = useContext(
     UserfContext
   );
-
+  const [inpUserType,setInpUserType]=useState("");
   const handleChange = (e) => {
-    setUserType(e.target.value);
+    setInpUserType(e.target.value);
+    console.log("handle change");
+    
   };
+  
   const userSelect = (e) => {
     e.preventDefault();
-    console.log(usertype);
-    axios
-      .post("http://54.169.208.124:9000/api/getgoogletoken", {
-        token,
-        usertype,
-      })
-      .then((res) => {
-        console.log(res);
-        let usert = res.data.data.userinfo.usertype;
-        localStorage.setItem("userType", usert);
-        setUserType(usert);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    console.log(inpUserType);
+    localStorage.setItem("userType",inpUserType);
+    setUserType(inpUserType);   
   };
 
   return (
     <div>
       {name}
       <form onSubmit={userSelect}>
-        <select id="userType" value={usertype} onChange={handleChange}>
+        <select id="userType" onChange={handleChange}>
+          <option value={null} >
+            Choose One
+          </option>
           <option value="Student" id="student">
             Student
           </option>
