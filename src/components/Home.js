@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserfContext } from "../context/userState";
 import GoogleLogin from "react-google-login";
-// import FrstLogin from "./frstLogin";
+import FrstLogin from "./frstLogin";
 import axios from "axios";
 
 export const Home = () => {
@@ -13,8 +13,9 @@ export const Home = () => {
   //Checking whether the user already registered or not
 
   useEffect(() => {
+  
     console.log("token:" + token);
-
+   
     if (token !== null && usertype === null) {
       axios
         .post("http://54.169.208.124:9000/api/getgoogletoken", {
@@ -24,33 +25,39 @@ export const Home = () => {
           localStorage.setItem("userType", res.data.data.userinfo.usertype);
           setUserType(res.data.data.userinfo.usertype);
           console.log("user type added");
+          console.log("usertype:" + usertype);
         })
         .catch((err) => {
+          setLoginState(<FrstLogin />);
           console.log(err);
         });
+
+       
+
     }
 
-    return () => {
-      return <div>error</div>
-    };
-  }, [token]);
+    
 
-  // const addUserType=()=>{
-  //   if (usertype !== undefined && usertype !== null) {
-  //     axios
-  //       .post("http://54.169.208.124:9000/api/creategoogleuser", {
-  //         token,
-  //         usertype,
-  //       })
-  //       .then((res) => {
-  //         localStorage.setItem("userType", usertype);
-  //         console.log("user Added");
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   }
-  // }
+    return () => {};
+  },[token]);
+
+
+const addUserType=()=>{
+  if (usertype !== undefined && usertype !== null) {
+    axios
+      .post("http://54.169.208.124:9000/api/creategoogleuser", {
+        token,
+        usertype,
+      })
+      .then((res) => {
+        localStorage.setItem("userType", usertype);
+        console.log("user Added");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+}
 
   // google login button response
   const responseGoogle = (response) => {
@@ -59,9 +66,9 @@ export const Home = () => {
 
       localStorage.setItem("name", response.profileObj.name);
       localStorage.setItem("token", response.tokenId);
-      console.log("name added");
-      setName(response.profileObj.name);
       setToken(localStorage.getItem("token"));
+      setName(response.profileObj.name);
+      console.log("google token" + token);
     } else {
       console.log(response);
     }
@@ -79,7 +86,7 @@ export const Home = () => {
         cookiePolicy={"single_host_origin"}
       />
     );
-  if (usertype)
+  if (token !== null && usertype !== null)
     return (
       <div>
         Already logged
@@ -95,5 +102,9 @@ export const Home = () => {
         </button>
       </div>
     );
-    
+  if (usertype === null){
+    return <FrstLogin/>;
+    addUserType();
+  }
+  
 };
