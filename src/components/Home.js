@@ -1,82 +1,49 @@
-import React, { useContext, useEffect, useState } from "react";
-import { UserfContext } from "../context/userState";
+import React, { useEffect } from "react";
 import GoogleLogin from "react-google-login";
-import FrstLogin from "./frstLogin";
-import axios from "axios";
+import useFetch from "../hooks/useFetch";
+import FirstLogin from "./frstLogin";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 export const Home = () => {
   // destructuring states from gloabal state
-  const { setName, token, setToken, usertype, setUserType, name } = useContext(
-    UserfContext
-  );
-  const [loginState, setLoginState] = useState();
-  //Checking whether the user already registered or not
+  const apiUrl = "/getgoogletoken";
+  const [{ response }, doFetch] = useFetch(apiUrl);
+  const [token, setToken] = useLocalStorage("token");
+  const [userType, setUserType] = useLocalStorage("userType");
 
   useEffect(() => {
-  
-    console.log("token:" + token);
-   
-    if (token !== null && usertype === null) {
-      axios
-        .post("http://54.169.208.124:9000/api/getgoogletoken", {
-          token
-        })
-        .then((res) => {
-          localStorage.setItem("userType", res.data.data.userinfo.usertype);
-          setUserType(res.data.data.userinfo.usertype);
-          console.log("user type added");
-          console.log("usertype:" + usertype);
-        })
-        .catch((err) => {
-          setLoginState(<FrstLogin />);
-          console.log(err);
-        });
-
-       
-
+    if (!response) {
+      return;
     }
-
-    
-
-    return () => {};
-  },[token]);
-
-
-const addUserType=()=>{
-  if (usertype !== undefined && usertype !== null) {
-    axios
-      .post("http://54.169.208.124:9000/api/creategoogleuser", {
-        token,
-        usertype,
-      })
-      .then((res) => {
-        localStorage.setItem("userType", usertype);
-        console.log("user Added");
-      })
-      .catch((err) => {
-        console.log(err);
+    if (response.msg === "user not exist")
+      doFetch({
+        method: "post",
+        data: {
+          token,
+          usertype: "teacher",
+        },
       });
-  }
-}
+    if (response.data.userinfo.usertype)
+      setUserType(response.data.userinfo.usertype);
+  }, [response, setToken, doFetch, token, setUserType]);
 
   // google login button response
   const responseGoogle = (response) => {
     if (response.accessToken) {
-      console.log(response);
-
-      localStorage.setItem("name", response.profileObj.name);
-      localStorage.setItem("token", response.tokenId);
-      setToken(localStorage.getItem("token"));
-      setName(response.profileObj.name);
-      console.log("google token" + token);
+      let tempToken = response.tokenId;
+      setToken(tempToken);
+      doFetch({
+        method: "post",
+        data: {
+          token: tempToken,
+        },
+      });
     } else {
       console.log(response);
     }
   };
 
-  //confirming the state of user
-  if (token == null && usertype == null)
-    //before login
+  if (token === "null") {
     return (
       <GoogleLogin
         clientId="230577544545-dodqre3umhpuvvdc48j6lnar0tidiudh.apps.googleusercontent.com"
@@ -86,25 +53,24 @@ const addUserType=()=>{
         cookiePolicy={"single_host_origin"}
       />
     );
-  if (token !== null && usertype !== null)
+  } else if (token !== "null") {
     return (
       <div>
-        Already logged
-        <button
-          onClick={() => {
-            localStorage.clear();
-            setToken(null);
-            setUserType(null);
-            setName(null);
-          }}
-        >
-          Logout
-        </button>
+        happy to see youu
+        <div>
+          Already logged
+          <button
+            onClick={() => {
+              setToken(null);
+            }}
+          >
+            Logout
+          </button>
+        </div>
+        <div hidden={userType !== "null" ? true : false}>
+          <FirstLogin />
+        </div>
       </div>
     );
-  if (usertype === null){
-    return <FrstLogin/>;
-    addUserType();
   }
-  
 };

@@ -1,30 +1,14 @@
-import React, { createContext } from "react";
-import { useState } from "react";
-
+import React, { createContext, useState } from "react";
 //Create Context
-
-export const UserfContext = createContext({});
-
+export const UserfContext = createContext([{}, () => {}]);
 //Provider Component
-
 export const UserProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  const [name, setName] = useState(localStorage.getItem("name"));
-  const [usertype, setUserType] = useState(localStorage.getItem("userType"));
-
-  //Actions
-
+  const [state, setState] = useState({
+    isLoggedIn: null,
+    currentUser: null,
+  });
   return (
-    <UserfContext.Provider
-      value={{
-        token,
-        setToken,
-        name,
-        setName,
-        usertype,
-        setUserType,
-      }}
-    >
+    <UserfContext.Provider value={[state, setState]}>
       {children}
     </UserfContext.Provider>
   );
