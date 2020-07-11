@@ -26,7 +26,7 @@ export default (url) => {
         token:`${token}`?`${token}`:''
     }
   }
-    Axios.post(baseUrl + url, requestOptions)
+    Axios(baseUrl + url, requestOptions)
       .then((res) => {
         console.log("res", res);
         setResponse(res.data);

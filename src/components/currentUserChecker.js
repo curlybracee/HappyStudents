@@ -23,7 +23,7 @@ const CurrentUserChecker=({children})=>{
             ...state,
             isLoading:true,
         }))
-    }, [token])
+    }, [])
 
     useEffect(()=>{
         if(!response){
