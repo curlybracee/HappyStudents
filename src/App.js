@@ -6,12 +6,13 @@ import { UserProvider } from "./context/userState";
 import { Header } from "./components/header";
 import { Home } from "./components/Home";
 import {Switch,Route,BrowserRouter as Router} from 'react-router-dom'
+import CurrentUserChecker from "./components/currentUserChecker";
 
 function App() {
   return (
     <div className="App">
       <UserProvider>
-        <div>
+        <CurrentUserChecker>
           <Header />
           <div className="container">
             <div className="wall-container">
@@ -22,7 +23,7 @@ function App() {
               </Router>
             </div>
           </div>
-        </div>
+        </CurrentUserChecker>
       </UserProvider>
     </div>
   );

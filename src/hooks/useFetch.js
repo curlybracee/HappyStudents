@@ -1,22 +1,32 @@
 import { useState, useEffect } from "react";
 import Axios from "axios";
+import useLocalStorage from "./useLocalStorage";
 export default (url) => {
   const baseUrl = "http://54.169.208.124:9000/api";
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   const [options, setOptions] = useState({});
+  const[token]=useLocalStorage('token')
+
 
   const doFetch = (options = {}) => {
-    setOptions(options);
-    setIsLoading(true);
+    setOptions(options)
+    setIsLoading(true)
   };
 
   useEffect(() => {
     if (!isLoading) {
-      return;
+      return
     }
-    Axios(baseUrl + url, options)
+
+    const requestOptions={
+      ...options,
+      ...{
+        token:`${token}`?`${token}`:''
+    }
+  }
+    Axios.post(baseUrl + url, requestOptions)
       .then((res) => {
         console.log("res", res);
         setResponse(res.data);
