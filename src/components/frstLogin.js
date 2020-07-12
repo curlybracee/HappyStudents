@@ -1,41 +1,63 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { UserfContext } from "../context/userState";
+import useLocalStorage from "../hooks/useLocalStorage";
+import useFetch from "../hooks/useFetch";
+import Profile from "./profile";
 
 const FrstLogin = () => {
-  const { name, setUserType } = useContext(
-    UserfContext
-  );
-  const [inpUserType,setInpUserType]=useState("");
+  const [currentUserState, setCurrentUserState] = useContext(UserfContext);
+  const [inpUserType, setInpUserType] = useState("");
+  const [{ response }, doFetch] = useFetch("/creategoogleuser");
+  const [token] = useLocalStorage("token");
+
+  useEffect(() => {
+    if (!response) {
+      return;
+    }
+    console.log("frst login :", response);
+
+    setCurrentUserState((state) => ({
+      ...state,
+      isLoggedIn: true,
+      isNewUser: false,
+      currentUser: response.data.userinfo,
+    }));
+  }, [response, setCurrentUserState]);
+
   const handleChange = (e) => {
     setInpUserType(e.target.value);
-    console.log("handle change");
-    
+    console.log("handle change", inpUserType);
   };
-  
+
   const userSelect = (e) => {
     e.preventDefault();
     console.log(inpUserType);
-    localStorage.setItem("userType",inpUserType);
-    setUserType(inpUserType);   
+    doFetch({
+      method: "post",
+      data: {
+        token: token,
+        usertype: inpUserType,
+      },
+    });
   };
-
+  console.log();
   return (
     <div>
-      {name}
-      <form onSubmit={userSelect}>
-        <select id="userType" onChange={handleChange}>
-          <option value={null} >
-            Choose One
-          </option>
-          <option value="Student" id="student">
-            Student
-          </option>
-          <option value="teacher" id="teacher">
-            Teacher
-          </option>
-        </select>
-        <button type="submit">Submit</button>
-      </form>
+      {currentUserState.isLoggedIn && (
+        <form onSubmit={userSelect}>
+          <select id="userType" onChange={handleChange}>
+            <option value={null}>Choose One</option>
+            <option value="Student" id="student">
+              Student
+            </option>
+            <option value="teacher" id="teacher">
+              Teacher
+            </option>
+          </select>
+          <button type="submit">Submit</button>
+        </form>
+      )}
+      {currentUserState.isLoggedIn && <Profile />}
     </div>
   );
 };

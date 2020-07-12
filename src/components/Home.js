@@ -1,16 +1,15 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import GoogleLogin from "react-google-login";
 import useFetch from "../hooks/useFetch";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { UserfContext } from "../context/userState";
 import FirstLogin from "./frstLogin";
-
+import Profile from "./profile";
 export const Home = () => {
   // destructuring states from gloabal state
   const apiUrl = "/getgoogletoken";
   const [{ response }, doFetch] = useFetch(apiUrl);
   const [token, setToken] = useLocalStorage("token");
-  const [isNewUser, setIsNewUser] = useState(false);
   const [currentUser, setCurrentUser] = useContext(UserfContext);
 
   useEffect(() => {
@@ -19,15 +18,16 @@ export const Home = () => {
     }
     console.log("home :", response);
     if (response.msg === "user not exist") {
-      setIsNewUser(true);
       setCurrentUser((state) => ({
         ...state,
         isLoggedIn: true,
+        isNewUser: true,
       }));
     } else {
       setCurrentUser((state) => ({
         ...state,
         isLoggedIn: true,
+        isNewUser: false,
         currentUser: response.data.userinfo,
       }));
     }
@@ -49,14 +49,7 @@ export const Home = () => {
     }
   };
 
-  const logOut = () => {
-    localStorage.clear();
-    setCurrentUser({
-      isLoggedIn: null,
-      currentUser: null,
-    });
-    window.location.reload(true);
-  };
+  console.log("new user :", currentUser.isNewUser);
 
   return (
     <div>
@@ -69,23 +62,8 @@ export const Home = () => {
           cookiePolicy={"single_host_origin"}
         />
       )}
-
-      {currentUser.isLoggedIn && !isNewUser && (
-        <div>
-          happy to see you,{currentUser.currentUser.name}
-          <div>
-            Already logged
-            <button onClick={logOut}>Logout</button>
-          </div>
-        </div>
-      )}
-
-      {isNewUser && (
-        <div>
-          <FirstLogin />
-          <button onClick={logOut}>Logout</button>
-        </div>
-      )}
+      {currentUser.isNewUser && <FirstLogin />}
+      {currentUser.isLoggedIn && !currentUser.isNewUser && <Profile />}
     </div>
   );
 };

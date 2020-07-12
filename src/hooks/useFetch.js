@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Axios from "axios";
 import useLocalStorage from "./useLocalStorage";
 export default (url) => {
@@ -7,25 +7,24 @@ export default (url) => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   const [options, setOptions] = useState({});
-  const[token]=useLocalStorage('token')
+  const [token] = useLocalStorage("token");
 
-
-  const doFetch = (options = {}) => {
-    setOptions(options)
-    setIsLoading(true)
-  };
+  const doFetch = useCallback((options = {}) => {
+    setOptions(options);
+    setIsLoading(true);
+  }, []);
 
   useEffect(() => {
     if (!isLoading) {
-      return
+      return;
     }
 
-    const requestOptions={
+    const requestOptions = {
       ...options,
       ...{
-        token:`${token}`?`${token}`:''
-    }
-  }
+        token: `${token}` ? `${token}` : "",
+      },
+    };
     Axios(baseUrl + url, requestOptions)
       .then((res) => {
         console.log("res", res);
@@ -37,7 +36,7 @@ export default (url) => {
         setIsLoading(false);
         setError(err);
       });
-  }, [isLoading, url, options]);
+  }, [isLoading, url, options, token]);
 
   return [{ isLoading, response, error }, doFetch];
 };

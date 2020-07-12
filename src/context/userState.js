@@ -5,6 +5,7 @@ export const UserfContext = createContext([{}, () => {}]);
 export const UserProvider = ({ children }) => {
   const [state, setState] = useState({
     isLoggedIn: null,
+    isNewUser: null,
     currentUser: null,
   });
   return (

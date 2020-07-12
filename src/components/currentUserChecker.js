@@ -2,13 +2,13 @@ import useFetch from '../hooks/useFetch'
 import {useEffect} from 'react'
 import {UserfContext} from '../context/userState'
 import { useContext } from 'react'
-import useLocalSorage from '../hooks/useLocalStorage'
+import useLocalStorage from '../hooks/useLocalStorage'
+import Axios from 'axios'
 
 const CurrentUserChecker=({children})=>{
     const[currentUser,setCurrentUserState]=useContext(UserfContext)
     const[{response},doFetch]=useFetch('/getgoogletoken')
-    console.log('response',response);
-    const[token]=useLocalSorage('token')
+    const[token]=useLocalStorage('token')
 
     useEffect(() => {
         if(!token){
@@ -18,24 +18,20 @@ const CurrentUserChecker=({children})=>{
                 }))
             return
         }
-        doFetch()
-        setCurrentUserState(state=>({
-            ...state,
-            isLoading:true,
-        }))
-    }, [])
+        Axios.post("http://54.169.208.124:9000/api/getgoogletoken",{token})
+        .then(res=>{
+            console.log('local check',res);
+            if(res.data.msg!=='user not exist')
+            {setCurrentUserState(state=>({
+                ...state,
+                isLoading:false,
+                isLoggedIn:true,
+                currentUser:res.data.data
+            }))}
+        })
+        .catch(err=>{console.log(err)})
+    }, [setCurrentUserState,token])
 
-    useEffect(()=>{
-        if(!response){
-            return
-        }
-        setCurrentUserState(state=>({
-            ...state,
-            isLoading:false,
-            isLoggedIn:true,
-            currentUser:response.user
-        }))
-    },[response])
 
 return children
 }
