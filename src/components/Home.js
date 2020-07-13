@@ -55,7 +55,7 @@ export const Home = () => {
     <div>
       {!currentUser.isLoggedIn && (
         <GoogleLogin
-          clientId="230577544545-dodqre3umhpuvvdc48j6lnar0tidiudh.apps.googleusercontent.com"
+          clientId="230577544545-47bo9vjq5hsttvtpq418fb2bcqa2r18m.apps.googleusercontent.com"
           buttonText="Google Login"
           onSuccess={responseGoogle}
           onFailure={responseGoogle}
