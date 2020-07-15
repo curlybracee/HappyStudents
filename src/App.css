@@ -40,6 +40,14 @@
   outline: none;
   box-shadow: 0 1px 2px silver;
 }
+.logout-btn{
+  border: 0;
+  padding:8px;
+  margin: 5px;
+}
+.user-panel{
+  margin:auto 20px;
+}
 /* desktop view   */
 
 @media only screen and (min-width: 768px) {
@@ -68,6 +76,9 @@
   .wall-container {
     max-width: 1200px;
     height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
   }
 }
 

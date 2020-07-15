@@ -9,7 +9,7 @@ export const Home = () => {
   // destructuring states from gloabal state
   const apiUrl = "/getgoogletoken";
   const [{ response }, doFetch] = useFetch(apiUrl);
-  const [token, setToken] = useLocalStorage("token");
+  const [, setToken] = useLocalStorage("token");
   const [currentUser, setCurrentUser] = useContext(UserfContext);
 
   useEffect(() => {

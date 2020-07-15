@@ -1,4 +1,3 @@
-import useFetch from '../hooks/useFetch'
 import {useEffect} from 'react'
 import {UserfContext} from '../context/userState'
 import { useContext } from 'react'
@@ -6,8 +5,7 @@ import useLocalStorage from '../hooks/useLocalStorage'
 import Axios from 'axios'
 
 const CurrentUserChecker=({children})=>{
-    const[currentUser,setCurrentUserState]=useContext(UserfContext)
-    const[{response},doFetch]=useFetch('/getgoogletoken')
+    const[,setCurrentUserState]=useContext(UserfContext)
     const[token]=useLocalStorage('token')
 
     useEffect(() => {
@@ -26,7 +24,7 @@ const CurrentUserChecker=({children})=>{
                 ...state,
                 isLoading:false,
                 isLoggedIn:true,
-                currentUser:res.data.data
+                currentUser:res.data.data.userinfo
             }))}
         })
         .catch(err=>{console.log(err)})
