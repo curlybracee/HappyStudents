@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import Axios from "axios";
 import useLocalStorage from "./useLocalStorage";
 export default (url) => {
-  const baseUrl = "https://54.169.208.124:9000/api";
+  const baseUrl = "http://54.169.208.124:9000/api";
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
