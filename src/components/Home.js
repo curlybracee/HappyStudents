@@ -38,6 +38,7 @@ export const Home = () => {
     if (response.accessToken) {
       let tempToken = response.tokenId;
       setToken(tempToken);
+      console.log('google',response)
       doFetch({
         method: "post",
         data: {
