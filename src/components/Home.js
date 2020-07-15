@@ -55,9 +55,9 @@ export const Home = () => {
     <div>
       {!currentUser.isLoggedIn && (
         <GoogleLogin
-          clientId="230577544545-47bo9vjq5hsttvtpq418fb2bcqa2r18m.apps.googleusercontent.com"
+          clientId="686761631837-91j44uet25c6ln8fhl1ijfmdqii6v973.apps.googleusercontent.com"
           buttonText="Google Login"
-          onSuccess={responseGoogle}
+          onSuccess={responseGoogle} 
           onFailure={responseGoogle}
           cookiePolicy={"single_host_origin"}
         />
