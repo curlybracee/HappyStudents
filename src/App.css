@@ -40,13 +40,13 @@
   outline: none;
   box-shadow: 0 1px 2px silver;
 }
-.logout-btn{
+.logout-btn {
   border: 0;
-  padding:8px;
+  padding: 8px;
   margin: 5px;
 }
-.user-panel{
-  margin:auto 20px;
+.user-panel {
+  margin: auto 20px;
 }
 /* desktop view   */
 

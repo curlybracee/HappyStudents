@@ -1,14 +1,16 @@
 import React, { useContext } from "react";
-import {UserfContext} from '../context/userState'
+import { UserfContext } from "../context/userState";
+import { Redirect } from "react-router-dom";
+
 export const Header = () => {
-  const[currentUserState,setCurrentUserState]=useContext(UserfContext)
+  const [currentUser, dispatch] = useContext(UserfContext);
+
   const logOut = () => {
     localStorage.clear();
-    setCurrentUserState({
-      isLoggedIn: null,
-      currentUser: null,
+    dispatch({
+      type: "SET_UNAUTHORIZED",
     });
-    window.location.reload(true);
+    return <Redirect to="/" />;
   };
 
   return (
@@ -24,10 +26,18 @@ export const Header = () => {
         </form>
       </div>
       <div className="user-panel">
-  {(currentUserState.isLoggedIn&&!currentUserState.isNewUser&&currentUserState.currentUser.name)&&
-  <div>{currentUserState.currentUser.name}
-  <button onClick={logOut} className="logout-btn">Logout</button>
-  </div>}
+        {currentUser.isLoggedIn &&
+          !currentUser.isNewUser &&
+          currentUser.currentUser.name && (
+            <div>
+              {currentUser.currentUser.name}
+              <button
+              onClick={logOut}
+              className="logout-btn">
+              Logout
+              </button>
+            </div>
+          )}
       </div>
     </div>
   );

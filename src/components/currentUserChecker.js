@@ -1,36 +1,35 @@
-import {useEffect} from 'react'
-import {UserfContext} from '../context/userState'
-import { useContext } from 'react'
-import useLocalStorage from '../hooks/useLocalStorage'
-import Axios from 'axios'
+import { useEffect, useContext } from "react";
+import { UserfContext } from "../context/userState";
+import useLocalStorage from "../hooks/useLocalStorage";
+import Axios from "axios";
 
-const CurrentUserChecker=({children})=>{
-    const[,setCurrentUserState]=useContext(UserfContext)
-    const[token]=useLocalStorage('token')
+const CurrentUserChecker = ({ children }) => {
+  const [, dispatch] = useContext(UserfContext);
+//checking local storage for token
+  const [token] = useLocalStorage("token");
 
-    useEffect(() => {
-        if(!token){
-            setCurrentUserState(state=>({
-                ...state,
-               isLoggedIn:false,
-                }))
-            return
+  useEffect(() => {
+    if (!token) {
+      dispatch({
+        type: "SET_UNAUTHORIZED",
+      });
+      return;
+    }
+//if there is a token sends api request
+    Axios.post("http://54.169.208.124:9000/api/getgoogletoken", { token })
+      .then((res) => {
+        if (res.data.msg !== "user not exist") {
+          dispatch({
+            type: "SET_AUTHORIZED",
+            token: res.data.data.token,
+            payload: res.data.data.userinfo,
+          });
         }
-        Axios.post("http://54.169.208.124:9000/api/getgoogletoken",{token})
-        .then(res=>{
-            console.log('local check',res);
-            if(res.data.msg!=='user not exist')
-            {setCurrentUserState(state=>({
-                ...state,
-                isLoading:false,
-                isLoggedIn:true,
-                currentUser:res.data.data.userinfo
-            }))}
-        })
-        .catch(err=>{console.log(err)})
-    }, [setCurrentUserState,token])
-
-
-return children
-}
-export default CurrentUserChecker
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [dispatch, token]);
+  return children;
+};
+export default CurrentUserChecker;

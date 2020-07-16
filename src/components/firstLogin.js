@@ -2,36 +2,36 @@ import React, { useContext, useState, useEffect } from "react";
 import { UserfContext } from "../context/userState";
 import useLocalStorage from "../hooks/useLocalStorage";
 import useFetch from "../hooks/useFetch";
-import Profile from "./profile";
+import { Redirect } from "react-router-dom";
 
 const FrstLogin = () => {
-  const [currentUserState, setCurrentUserState] = useContext(UserfContext);
+  const [currentUserState, dispatch] = useContext(UserfContext);
   const [inpUserType, setInpUserType] = useState("");
   const [{ response }, doFetch] = useFetch("/creategoogleuser");
   const [token] = useLocalStorage("token");
+  const [isSuccessfulluSubmit, setIsSuccessfullySubmit] = useState(false);
 
+  //if response after choosing user type
   useEffect(() => {
     if (!response) {
       return;
     }
-    console.log("frst login :", response);
 
-    setCurrentUserState((state) => ({
-      ...state,
-      isLoggedIn: true,
-      isNewUser: false,
-      currentUser: response.data.userinfo,
-    }));
-  }, [response, setCurrentUserState]);
+    dispatch({
+      type: "SET_AUTHORIZED",
+      token: response.data.token,
+      payload: response.data.userinfo,
+    });
+    setIsSuccessfullySubmit(true);
+  }, [response, dispatch]);
 
   const handleChange = (e) => {
     setInpUserType(e.target.value);
-    console.log("handle change", inpUserType);
   };
 
   const userSelect = (e) => {
     e.preventDefault();
-    console.log(inpUserType);
+    //Submitting usertype through useFetch hook
     doFetch({
       method: "post",
       data: {
@@ -40,7 +40,14 @@ const FrstLogin = () => {
       },
     });
   };
-  console.log();
+
+  if (!currentUserState.isLoggedIn) {
+    return <Redirect to="/" />;
+  }
+  if (isSuccessfulluSubmit) {
+    return <Redirect to="/profile" />;
+  }
+
   return (
     <div>
       {currentUserState.isLoggedIn && (
@@ -57,7 +64,6 @@ const FrstLogin = () => {
           <button type="submit">Submit</button>
         </form>
       )}
-      {currentUserState.isLoggedIn && <Profile />}
     </div>
   );
 };
