@@ -13,9 +13,7 @@ export const Home = () => {
   const [, setToken] = useLocalStorage("token");
   const [currentUser, dispatch] = useContext(UserfContext);
 
-  const clientIdLocal =
-    "230577544545-47bo9vjq5hsttvtpq418fb2bcqa2r18m.apps.googleusercontent.com";
-
+  const clientIdLocal ="686761631837-91j44uet25c6ln8fhl1ijfmdqii6v973.apps.googleusercontent.com"
   // google login button response
   const responseGoogle = (response) => {
     if (response.accessToken) {
