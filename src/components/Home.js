@@ -7,7 +7,7 @@ import { Redirect } from "react-router-dom";
 
 export const Home = () => {
   // destructuring states from gloabal state
-  const apiUrl = "/getgoogletoken";
+  const apiUrl = "/user/createuser";
   const [{ response }, doFetch] = useFetch(apiUrl);
 
   const [, setToken] = useLocalStorage("token");
@@ -23,8 +23,8 @@ export const Home = () => {
       setToken(tempToken);
       doFetch({
         method: "post",
-        data: {
-          token: tempToken,
+        headers: {
+          authorization: `Bearer ${tempToken}`,
         },
       });
     } else {
@@ -52,19 +52,27 @@ export const Home = () => {
 
   return (
     <div>
-      {!currentUser.isLoggedIn && (
-        <GoogleLogin
-          clientId={clientIdLocal}
-          buttonText="Google Login"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
-          cookiePolicy={"single_host_origin"}
-        />
-      )}
-      {currentUser.isNewUser && <Redirect to="/firstlogin" />}
-      {currentUser.isLoggedIn && !currentUser.isNewUser && (
-        <Redirect to="/profile" />
-      )}
+      <div className='hero section'>
+        {!currentUser.isLoggedIn && (
+          <GoogleLogin
+            clientId={clientIdLocal}
+            buttonText="Google Login"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            cookiePolicy={"single_host_origin"}
+          />
+        )}
+        {currentUser.isNewUser && <Redirect to="/firstlogin" />}
+        {currentUser.isLoggedIn && !currentUser.isNewUser && (
+          <Redirect to="/profile" />
+        )}
+      </div>
+      <div className="courses section">
+
+      </div>
+      <div className="courses section">
+
+      </div>
     </div>
   );
 };

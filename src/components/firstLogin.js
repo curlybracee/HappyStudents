@@ -3,6 +3,7 @@ import { UserfContext } from "../context/userState";
 import useLocalStorage from "../hooks/useLocalStorage";
 import useFetch from "../hooks/useFetch";
 import { Redirect } from "react-router-dom";
+import classNames from "classnames";
 
 const FrstLogin = () => {
   const [currentUserState, dispatch] = useContext(UserfContext);
@@ -10,7 +11,7 @@ const FrstLogin = () => {
   const [{ response }, doFetch] = useFetch("/creategoogleuser");
   const [token] = useLocalStorage("token");
   const [isSuccessfulluSubmit, setIsSuccessfullySubmit] = useState(false);
-
+  const [selected, setIsSelected] = useState(false);
   //if response after choosing user type
   useEffect(() => {
     if (!response) {
@@ -25,12 +26,7 @@ const FrstLogin = () => {
     setIsSuccessfullySubmit(true);
   }, [response, dispatch]);
 
-  const handleChange = (e) => {
-    setInpUserType(e.target.value);
-  };
-
   const userSelect = (e) => {
-    e.preventDefault();
     //Submitting usertype through useFetch hook
     doFetch({
       method: "post",
@@ -40,7 +36,14 @@ const FrstLogin = () => {
       },
     });
   };
-
+  const option1 = classNames({
+    option: true,
+    active: inpUserType === "student",
+  });
+  const option2 = classNames({
+    option: true,
+    active: inpUserType === "teacher",
+  });
   if (!currentUserState.isLoggedIn) {
     return <Redirect to="/" />;
   }
@@ -49,21 +52,29 @@ const FrstLogin = () => {
   }
 
   return (
-    <div>
-      {currentUserState.isLoggedIn && (
-        <form onSubmit={userSelect}>
-          <select id="userType" onChange={handleChange}>
-            <option value={null}>Choose One</option>
-            <option value="Student" id="student">
-              Student
-            </option>
-            <option value="teacher" id="teacher">
-              Teacher
-            </option>
-          </select>
-          <button type="submit">Submit</button>
-        </form>
-      )}
+    <div className="firstLogin">
+      <h2>Choose How would you like to use your Account</h2>
+      <div className="firstLoginForm">
+        <div
+          className={option1}
+          onClick={() => {
+            setInpUserType("student");
+            setIsSelected(true);
+          }}
+        >
+          <h3>Student</h3>
+        </div>
+        <div
+          className={option2}
+          onClick={() => {
+            setInpUserType("teacher");
+            setIsSelected(true);
+          }}
+        >
+          <h3>Teacher</h3>
+        </div>
+      </div>
+      <button onClick={userSelect}>Submit</button>
     </div>
   );
 };

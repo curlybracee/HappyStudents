@@ -1,44 +1,58 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { UserfContext } from "../context/userState";
-import { Redirect } from "react-router-dom";
+import classNames from "classnames";
+import { Link } from "react-router-dom";
 
 export const Header = () => {
   const [currentUser, dispatch] = useContext(UserfContext);
-
+  const [showNav, setShowNav] = useState(false);
   const logOut = () => {
     localStorage.clear();
     dispatch({
       type: "SET_UNAUTHORIZED",
     });
-    return <Redirect to="/" />;
+    return;
   };
+  const navClick = () => {
+    setShowNav(!showNav);
+  };
+  const hamburger = classNames({
+    hamburger: true,
+    navRotate: showNav,
+  });
+  const navLinks = classNames({
+    "nav-links open": showNav,
+    "nav-links": true,
+  });
 
   return (
-    <div className="header">
-      <h1>HappyStudents</h1>
-      <div className="searchBar">
-        <form>
-          <input
-            type="text"
-            className="searchInput"
-            placeholder="Search Course"
-          />
-        </form>
-      </div>
-      <div className="user-panel">
+    <header>
+      <div className="header">
+        <div className="logo-section">
+          <h1>HappyStudents</h1>
+        </div>
         {currentUser.isLoggedIn &&
           !currentUser.isNewUser &&
           currentUser.currentUser.name && (
-            <div>
-              {currentUser.currentUser.name}
-              <button
-              onClick={logOut}
-              className="logout-btn">
-              Logout
-              </button>
-            </div>
+            <nav>
+              <div onClick={navClick} className={hamburger}>
+                <div className="line"></div>
+                <div className="line"></div>
+                <div className="line"></div>
+              </div>
+              <ul className={navLinks}>
+                <li>
+                  <Link onClick={navClick} to="/profile" className="navLink">
+                    {currentUser.currentUser.name.split(" ")}
+                  </Link>
+                </li>
+                <li onClick={logOut} className="logout-btn">
+                  <Link className='navLink'>Logout</Link>
+                </li>
+              </ul>
+            </nav>
           )}
       </div>
-    </div>
+    </header>
   );
 };

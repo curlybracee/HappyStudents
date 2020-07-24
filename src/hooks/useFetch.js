@@ -3,7 +3,7 @@ import Axios from "axios";
 import useLocalStorage from "./useLocalStorage";
 
 export default (url) => {
-  const baseUrl = "http://54.169.208.124:9000/api";
+  const baseUrl = "https://happys-server.herokuapp.com/api";
 
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState(null);
